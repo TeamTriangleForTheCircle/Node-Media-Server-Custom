@@ -846,7 +846,7 @@ class NodeRtmpSession {
           rtmpChunks.writeUInt32LE(playerSession.playStreamId, 8);
           this.frames.push(rtmpChunks);
           Logger.log(this.frames);
-          playerSession.res.write(rtmpChunks);
+          // playerSession.res.write(rtmpChunks);
         }
       } else if (playerSession instanceof NodeFlvSession) {
         playerSession.res.write(flvTag, null, (e) => {
