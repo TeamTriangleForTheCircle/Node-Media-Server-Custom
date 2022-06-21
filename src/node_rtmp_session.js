@@ -748,7 +748,7 @@ class NodeRtmpSession {
           playerSession.isReceiveAudio
         ) {
           rtmpChunks.writeUInt32LE(playerSession.playStreamId, 8);
-          playerSession.res.write(rtmpChunks);
+          // playerSession.res.write(rtmpChunks);
         }
       } else if (playerSession instanceof NodeFlvSession) {
         playerSession.res.write(flvTag, null, (e) => {
@@ -845,7 +845,8 @@ class NodeRtmpSession {
           playerSession.isReceiveVideo
         ) {
           rtmpChunks.writeUInt32LE(playerSession.playStreamId, 8);
-          playerSession.res.write(rtmpChunks);
+          frames.push(rtmpChunks);
+          // playerSession.res.write(rtmpChunks);
         }
       } else if (playerSession instanceof NodeFlvSession) {
         playerSession.res.write(flvTag, null, (e) => {
@@ -904,8 +905,6 @@ class NodeRtmpSession {
               !playerSession.isPause
             ) {
               rtmpChunks.writeUInt32LE(playerSession.playStreamId, 8);
-              frames.push(rtmpChunks);
-              Logger.log(frames.length + " aantal frames");
               playerSession.socket.write(rtmpChunks);
             }
           } else if (playerSession instanceof NodeFlvSession) {
