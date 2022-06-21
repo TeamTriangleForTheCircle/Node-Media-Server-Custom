@@ -843,6 +843,7 @@ class NodeRtmpSession {
           playerSession.isReceiveVideo
         ) {
           rtmpChunks.writeUInt32LE(playerSession.playStreamId, 8);
+          Logger.log(`player: ${playerId} en datalengte: ${rtmpChunks.length}`);
           playerSession.res.write(rtmpChunks);
         }
       } else if (playerSession instanceof NodeFlvSession) {
