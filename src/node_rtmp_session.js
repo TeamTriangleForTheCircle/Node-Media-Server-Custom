@@ -433,7 +433,7 @@ class NodeRtmpSession {
    * @param {Number} bytes
    */
   rtmpChunkRead(data, p, bytes) {
-    // Logger.log('rtmpChunkRead', p, bytes);
+    Logger.log("rtmpChunkRead", p, bytes);
     let size = 0;
     let offset = 0;
     let extended_timestamp = 0;
@@ -467,6 +467,7 @@ class NodeRtmpSession {
             this.parserBuffer[this.parserBytes++] = data[p + offset++];
           }
           if (this.parserBytes >= size) {
+            Logger.log("rtmpPacktetParse");
             this.rtmpPacketParse();
             this.parserState = RTMP_PARSE_EXTENDED_TIMESTAMP;
           }
@@ -495,6 +496,7 @@ class NodeRtmpSession {
               } else {
                 this.parserPacket.clock += extended_timestamp;
               }
+              Logger.log("rtmpPacketAlloc");
               this.rtmpPacketAlloc();
             }
             this.parserState = RTMP_PARSE_PAYLOAD;
@@ -523,6 +525,7 @@ class NodeRtmpSession {
             if (this.parserPacket.clock > 0xffffffff) {
               break;
             }
+            Logger.log("rtmpHandler");
             this.rtmpHandler();
           } else if (0 === this.parserPacket.bytes % this.inChunkSize) {
             this.parserState = RTMP_PARSE_INIT;
@@ -538,6 +541,7 @@ class NodeRtmpSession {
     }
     if (this.ackSize > 0 && this.inAckSize - this.inLastAck >= this.ackSize) {
       this.inLastAck = this.inAckSize;
+      Logger.log("sendACK");
       this.sendACK(this.inAckSize);
     }
 
