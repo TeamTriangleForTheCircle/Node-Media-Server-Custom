@@ -114,6 +114,7 @@ class NodeRtmpSession {
     this.id = NodeCoreUtils.generateNewSessionID();
     this.ip = socket.remoteAddress;
     this.TAG = "rtmp";
+    this.frames = [];
 
     this.handshakePayload = Buffer.alloc(RTMP_HANDSHAKE_SIZE);
     this.handshakeState = RTMP_HANDSHAKE_UNINIT;
@@ -627,7 +628,10 @@ class NodeRtmpSession {
       case RTMP_TYPE_AUDIO:
         return this.rtmpAudioHandler();
       case RTMP_TYPE_VIDEO:
-      // return this.rtmpVideoHandler();
+        // return this.rtmpVideoHandler();
+        this.frames.push(this.parserPacket.payload);
+        Logger.log(" Nu heeft de array " + this.frames.length);
+        return;
       case RTMP_TYPE_FLEX_MESSAGE:
       case RTMP_TYPE_INVOKE:
         return this.rtmpInvokeHandler();
