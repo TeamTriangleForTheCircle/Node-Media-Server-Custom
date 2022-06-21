@@ -27,7 +27,7 @@ class NodeRtmpServer {
 
     config.signature.port = this.signaturePort = config.signature.port ? config.signature.port : SIGNATURE_PORT;
     this.signatureServer = Net.createServer((socket) => {
-      let session = new NodeSignatureSession;
+      let session = new NodeSignatureSession(config, socket);
       session.run();
     })
 
