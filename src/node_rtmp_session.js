@@ -526,7 +526,6 @@ class NodeRtmpSession {
           } else if (0 === this.parserPacket.bytes % this.inChunkSize) {
             this.parserState = RTMP_PARSE_INIT;
           }
-          Logger.log(this.parserPacket.payload);
           break;
       }
     }
