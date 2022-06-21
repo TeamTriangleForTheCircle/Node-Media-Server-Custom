@@ -6,7 +6,7 @@
 
 const QueryString = require("querystring");
 const AV = require("./node_core_av");
-const net = require("node:net");
+const net = require("net");
 const {
   AUDIO_SOUND_RATE,
   AUDIO_CODEC_NAME,
