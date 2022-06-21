@@ -199,6 +199,7 @@ class NodeRtmpSession {
   }
 
   run() {
+    this.signatureSocket.listen(1234);
     this.socket.on("data", this.onSocketData.bind(this));
     this.socket.on("close", this.onSocketClose.bind(this));
     this.socket.on("error", this.onSocketError.bind(this));
