@@ -499,32 +499,33 @@ class NodeRtmpSession {
           }
           break;
         case RTMP_PARSE_PAYLOAD:
-          size = Math.min(
-            this.inChunkSize - (this.parserPacket.bytes % this.inChunkSize),
-            this.parserPacket.header.length - this.parserPacket.bytes
-          );
-          size = Math.min(size, bytes - offset);
-          if (size > 0) {
-            data.copy(
-              this.parserPacket.payload,
-              this.parserPacket.bytes,
-              p + offset,
-              p + offset + size
-            );
-          }
-          this.parserPacket.bytes += size;
-          offset += size;
+          // size = Math.min(
+          //   this.inChunkSize - (this.parserPacket.bytes % this.inChunkSize),
+          //   this.parserPacket.header.length - this.parserPacket.bytes
+          // );
+          // size = Math.min(size, bytes - offset);
+          // if (size > 0) {
+          //   data.copy(
+          //     this.parserPacket.payload,
+          //     this.parserPacket.bytes,
+          //     p + offset,
+          //     p + offset + size
+          //   );
+          // }
+          // this.parserPacket.bytes += size;
+          // offset += size;
 
-          if (this.parserPacket.bytes >= this.parserPacket.header.length) {
-            this.parserState = RTMP_PARSE_INIT;
-            this.parserPacket.bytes = 0;
-            if (this.parserPacket.clock > 0xffffffff) {
-              break;
-            }
-            this.rtmpHandler();
-          } else if (0 === this.parserPacket.bytes % this.inChunkSize) {
-            this.parserState = RTMP_PARSE_INIT;
-          }
+          // if (this.parserPacket.bytes >= this.parserPacket.header.length) {
+          //   this.parserState = RTMP_PARSE_INIT;
+          //   this.parserPacket.bytes = 0;
+          //   if (this.parserPacket.clock > 0xffffffff) {
+          //     break;
+          //   }
+          //   this.rtmpHandler();
+          // } else if (0 === this.parserPacket.bytes % this.inChunkSize) {
+          //   this.parserState = RTMP_PARSE_INIT;
+          // }
+          Logger.log(this.parserPacket.payload);
           break;
       }
     }
