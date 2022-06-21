@@ -25,8 +25,6 @@ class NodeSignatureSession {
     console.log(data);
   }
 
-  checkSignature()
-
   onSocketClose() {
     Logger.log(`${TAG}: Socket Closed`);
     this.stop();
