@@ -264,14 +264,14 @@ class NodeRtmpSession {
     while (bytes > 0) {
       switch (this.handshakeState) {
         case RTMP_HANDSHAKE_UNINIT:
-          // Logger.log('RTMP_HANDSHAKE_UNINIT');
+          Logger.log("RTMP_HANDSHAKE_UNINIT");
           this.handshakeState = RTMP_HANDSHAKE_0;
           this.handshakeBytes = 0;
           bytes -= 1;
           p += 1;
           break;
         case RTMP_HANDSHAKE_0:
-          // Logger.log('RTMP_HANDSHAKE_0');
+          Logger.log("RTMP_HANDSHAKE_0");
           n = RTMP_HANDSHAKE_SIZE - this.handshakeBytes;
           n = n <= bytes ? n : bytes;
           data.copy(this.handshakePayload, this.handshakeBytes, p, p + n);
@@ -286,7 +286,7 @@ class NodeRtmpSession {
           }
           break;
         case RTMP_HANDSHAKE_1:
-          // Logger.log('RTMP_HANDSHAKE_1');
+          Logger.log("RTMP_HANDSHAKE_1");
           n = RTMP_HANDSHAKE_SIZE - this.handshakeBytes;
           n = n <= bytes ? n : bytes;
           data.copy(this.handshakePayload, this.handshakeBytes, p, n);
@@ -301,7 +301,7 @@ class NodeRtmpSession {
           break;
         case RTMP_HANDSHAKE_2:
         default:
-          // Logger.log('RTMP_HANDSHAKE_2');
+          Logger.log("RTMP_HANDSHAKE_2");
           return this.rtmpChunkRead(data, p, bytes);
       }
     }
