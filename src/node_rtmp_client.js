@@ -258,7 +258,7 @@ class NodeRtmpClient {
     packet.header.length = packet.payload.length;
     packet.header.timestamp = timestamp;
     let rtmpChunks = this.rtmpChunksCreate(packet);
-    this.socket.write(rtmpChunks);
+    // this.socket.write(rtmpChunks);
   }
 
   pushVideo(videoData, timestamp) {
@@ -285,7 +285,7 @@ class NodeRtmpClient {
     packet.header.length = packet.payload.length;
     packet.header.timestamp = timestamp;
     let rtmpChunks = this.rtmpChunksCreate(packet);
-    this.socket.write(rtmpChunks);
+    // this.socket.write(rtmpChunks);
   }
 
   rtmpUrlParser(url) {
