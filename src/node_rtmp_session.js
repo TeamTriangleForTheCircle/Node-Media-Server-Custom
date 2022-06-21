@@ -107,8 +107,6 @@ const RtmpPacket = {
 };
 
 class NodeRtmpSession {
-  frames = [];
-
   constructor(config, socket) {
     this.config = config;
     this.socket = socket;
@@ -116,6 +114,7 @@ class NodeRtmpSession {
     this.id = NodeCoreUtils.generateNewSessionID();
     this.ip = socket.remoteAddress;
     this.TAG = "rtmp";
+    this.frames = [];
 
     this.handshakePayload = Buffer.alloc(RTMP_HANDSHAKE_SIZE);
     this.handshakeState = RTMP_HANDSHAKE_UNINIT;
