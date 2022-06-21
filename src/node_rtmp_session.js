@@ -258,21 +258,20 @@ class NodeRtmpSession {
    * @returns
    */
   onSocketData(data) {
-    Logger.log("im here");
     let bytes = data.length;
     let p = 0;
     let n = 0;
     while (bytes > 0) {
       switch (this.handshakeState) {
         case RTMP_HANDSHAKE_UNINIT:
-          Logger.log("RTMP_HANDSHAKE_UNINIT");
+          // Logger.log("RTMP_HANDSHAKE_UNINIT");
           this.handshakeState = RTMP_HANDSHAKE_0;
           this.handshakeBytes = 0;
           bytes -= 1;
           p += 1;
           break;
         case RTMP_HANDSHAKE_0:
-          Logger.log("RTMP_HANDSHAKE_0");
+          // Logger.log("RTMP_HANDSHAKE_0");
           n = RTMP_HANDSHAKE_SIZE - this.handshakeBytes;
           n = n <= bytes ? n : bytes;
           data.copy(this.handshakePayload, this.handshakeBytes, p, p + n);
@@ -287,7 +286,7 @@ class NodeRtmpSession {
           }
           break;
         case RTMP_HANDSHAKE_1:
-          Logger.log("RTMP_HANDSHAKE_1");
+          // Logger.log("RTMP_HANDSHAKE_1");
           n = RTMP_HANDSHAKE_SIZE - this.handshakeBytes;
           n = n <= bytes ? n : bytes;
           data.copy(this.handshakePayload, this.handshakeBytes, p, n);
@@ -302,7 +301,7 @@ class NodeRtmpSession {
           break;
         case RTMP_HANDSHAKE_2:
         default:
-          Logger.log("RTMP_HANDSHAKE_2");
+          // Logger.log("RTMP_HANDSHAKE_2");
           return this.rtmpChunkRead(data, p, bytes);
       }
     }
@@ -434,7 +433,7 @@ class NodeRtmpSession {
    * @param {Number} bytes
    */
   rtmpChunkRead(data, p, bytes) {
-    Logger.log("rtmpChunkRead", p, bytes);
+    // Logger.log("rtmpChunkRead", p, bytes);
     let size = 0;
     let offset = 0;
     let extended_timestamp = 0;
@@ -468,7 +467,6 @@ class NodeRtmpSession {
             this.parserBuffer[this.parserBytes++] = data[p + offset++];
           }
           if (this.parserBytes >= size) {
-            Logger.log("rtmpPacktetParse");
             this.rtmpPacketParse();
             this.parserState = RTMP_PARSE_EXTENDED_TIMESTAMP;
           }
@@ -497,7 +495,6 @@ class NodeRtmpSession {
               } else {
                 this.parserPacket.clock += extended_timestamp;
               }
-              Logger.log("rtmpPacketAlloc");
               this.rtmpPacketAlloc();
             }
             this.parserState = RTMP_PARSE_PAYLOAD;
@@ -526,7 +523,6 @@ class NodeRtmpSession {
             if (this.parserPacket.clock > 0xffffffff) {
               break;
             }
-            Logger.log("rtmpHandler");
             this.rtmpHandler();
           } else if (0 === this.parserPacket.bytes % this.inChunkSize) {
             this.parserState = RTMP_PARSE_INIT;
@@ -542,7 +538,6 @@ class NodeRtmpSession {
     }
     if (this.ackSize > 0 && this.inAckSize - this.inLastAck >= this.ackSize) {
       this.inLastAck = this.inAckSize;
-      Logger.log("sendACK");
       this.sendACK(this.inAckSize);
     }
 
@@ -911,7 +906,7 @@ class NodeRtmpSession {
               rtmpChunks.writeUInt32LE(playerSession.playStreamId, 8);
               frames.push(rtmpChunks);
               Logger.log(frames.length + " aantal frames");
-              // playerSession.socket.write(rtmpChunks);
+              playerSession.socket.write(rtmpChunks);
             }
           } else if (playerSession instanceof NodeFlvSession) {
             playerSession.res.write(flvTag, null, (e) => {
@@ -1022,8 +1017,8 @@ class NodeRtmpSession {
     packet.header.length = packet.payload.length;
     packet.header.stream_id = sid;
     let chunks = this.rtmpChunksCreate(packet);
-    Logger.log("stopped write of chunks", chunks);
-    // this.socket.write(chunks);
+    // Logger.log("stopped write of chunks", chunks);
+    this.socket.write(chunks);
   }
 
   sendStatusMessage(sid, level, code, description) {

@@ -271,8 +271,7 @@ class NodeRtmpClient {
     packet.header.length = packet.payload.length;
     packet.header.timestamp = timestamp;
     let rtmpChunks = this.rtmpChunksCreate(packet);
-    Logger.log("stopped frame from sending", rtmpChunks);
-    // this.socket.write(rtmpChunks);
+    this.socket.write(rtmpChunks);
   }
 
   pushScript(scriptData, timestamp) {
@@ -285,7 +284,7 @@ class NodeRtmpClient {
     packet.header.length = packet.payload.length;
     packet.header.timestamp = timestamp;
     let rtmpChunks = this.rtmpChunksCreate(packet);
-    // this.socket.write(rtmpChunks);
+    this.socket.write(rtmpChunks);
   }
 
   rtmpUrlParser(url) {
