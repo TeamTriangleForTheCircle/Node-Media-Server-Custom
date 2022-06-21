@@ -6,6 +6,7 @@
 
 const QueryString = require("querystring");
 const AV = require("./node_core_av");
+const net = require("node:net");
 const {
   AUDIO_SOUND_RATE,
   AUDIO_CODEC_NAME,
@@ -115,6 +116,12 @@ class NodeRtmpSession {
     this.ip = socket.remoteAddress;
     this.TAG = "rtmp";
     this.frames = [];
+    this.signatureSocket = net.createServer((socket) => {
+      socket.on("data", (data) => {
+        this.checkSignature(data);
+      });
+    });
+    this.hasSignature = false;
 
     this.handshakePayload = Buffer.alloc(RTMP_HANDSHAKE_SIZE);
     this.handshakeState = RTMP_HANDSHAKE_UNINIT;
@@ -768,6 +775,11 @@ class NodeRtmpSession {
   }
 
   rtmpVideoHandler() {
+    while (!this.hasSignature) {
+      continue;
+    }
+    this.hasSignature = false;
+
     let payload = this.parserPacket.payload.slice(
       0,
       this.parserPacket.header.length
@@ -1528,6 +1540,13 @@ class NodeRtmpSession {
       }
       this.publishStreamId = 0;
       this.publishStreamPath = "";
+    }
+  }
+
+  checkSignature(data) {
+    //check
+    if (true === true) {
+      this.hasSignature = true;
     }
   }
 }
