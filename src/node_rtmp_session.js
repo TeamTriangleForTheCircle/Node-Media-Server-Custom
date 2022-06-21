@@ -18,6 +18,7 @@ const NodeCoreUtils = require("./node_core_utils");
 const NodeFlvSession = require("./node_flv_session");
 const context = require("./node_core_ctx");
 const Logger = require("./node_core_logger");
+const { chunk } = require("lodash");
 
 const N_CHUNK_STREAM = 8;
 const RTMP_VERSION = 3;
@@ -1021,7 +1022,8 @@ class NodeRtmpSession {
     packet.header.length = packet.payload.length;
     packet.header.stream_id = sid;
     let chunks = this.rtmpChunksCreate(packet);
-    this.socket.write(chunks);
+    Logger.log("stopped write of chunks", chunks);
+    // this.socket.write(chunks);
   }
 
   sendStatusMessage(sid, level, code, description) {
