@@ -11,17 +11,25 @@ const Net = require('net');
 const NodeRtmpSession = require('./node_rtmp_session');
 
 const context = require('./node_core_ctx');
+const NodeSignatureSession = require('./node_signature_session');
 
 const RTMP_PORT = 1935;
 const RTMPS_PORT = 443;
+const SIGNATURE_PORT = 1936;
 
 class NodeRtmpServer {
   constructor(config) {
-    config.rtmp.port = this.port = config.rtmp.port ? config.rtmp.port : RTMP_PORT;
+    config.rtmp.port = this.rtmpPort = config.rtmp.port ? config.rtmp.port : RTMP_PORT;
     this.tcpServer = Net.createServer((socket) => {
       let session = new NodeRtmpSession(config, socket);
       session.run();
     });
+
+    config.signature.port = this.signaturePort = config.signature.port ? config.signature.port : SIGNATURE_PORT;
+    this.signatureServer = Net.createServer((socket) => {
+      let session = new NodeSignatureSession;
+      session.run();
+    })
 
     if (config.rtmp.ssl){
       config.rtmp.ssl.port = this.sslPort = config.rtmp.ssl.port ? config.rtmp.ssl.port : RTMPS_PORT;
@@ -41,16 +49,28 @@ class NodeRtmpServer {
   }
 
   run() {
-    this.tcpServer.listen(this.port, () => {
-      Logger.log(`Node Media Rtmp Server started on port: ${this.port}`);
+    this.tcpServer.listen(this.rtmpPort, () => {
+      Logger.log(`Node Media Rtmp Server started on port: ${this.rtmpPort}`);
+    });
+
+    this.signatureServer.listen(this.signaturePort, () => {
+      Logger.log(`Node Media Signature Server started on port: ${this.signaturePort}`);
     });
 
     this.tcpServer.on('error', (e) => {
       Logger.error(`Node Media Rtmp Server ${e}`);
     });
 
+    this.signatureServer.on('error', (e) => {
+      Logger.error(`Node Media Signature Server ${e}`);
+    });
+
     this.tcpServer.on('close', () => {
       Logger.log('Node Media Rtmp Server Close.');
+    });
+
+    this.signatureServer.on('close', () => {
+      Logger.log('Node Media Signature Server Close.');
     });
 
     if (this.tlsServer) {

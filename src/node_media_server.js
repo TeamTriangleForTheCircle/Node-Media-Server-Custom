@@ -22,7 +22,9 @@ class NodeMediaServer {
   run() {
     Logger.setLogType(this.config.logType);
     Logger.log(`Node Media Server v${Package.version}`);
-    if (this.config.rtmp) {
+
+    // Ensure that the the config includes both the rtmp and signature socket config.
+    if (this.config.rtmp && this.config.signature) {
       this.nrs = new NodeRtmpServer(this.config);
       this.nrs.run();
     }
