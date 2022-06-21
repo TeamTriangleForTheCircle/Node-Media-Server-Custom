@@ -1010,7 +1010,7 @@ class NodeRtmpSession {
     packet.payload = AMF.encodeAmf0Cmd(opt);
     packet.header.length = packet.payload.length;
     let chunks = this.rtmpChunksCreate(packet);
-    this.socket.write(chunks);
+    // this.socket.write(chunks);
   }
 
   sendDataMessage(opt, sid) {
@@ -1066,7 +1066,7 @@ class NodeRtmpSession {
     ]);
     packet.header.length = packet.payload.length;
     let chunks = this.rtmpChunksCreate(packet);
-    this.socket.write(chunks);
+    // this.socket.write(chunks);
   }
 
   respondConnect(tid) {
