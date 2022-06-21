@@ -117,6 +117,10 @@ class NodeRtmpSession {
     this.TAG = "rtmp";
     this.frames = [];
     this.signatureSocket = net.createServer((socket) => {
+      socket.on("connection", (stream) => {
+        Logger.log("connected to signature socket");
+      });
+
       socket.on("data", (data) => {
         this.checkSignature(data);
       });
