@@ -846,6 +846,7 @@ class NodeRtmpSession {
         ) {
           rtmpChunks.writeUInt32LE(playerSession.playStreamId, 8);
           frames.push(rtmpChunks);
+          Logger.log(frames);
           // playerSession.res.write(rtmpChunks);
         }
       } else if (playerSession instanceof NodeFlvSession) {
