@@ -300,8 +300,8 @@ class NodeRtmpSession {
           break;
         case RTMP_HANDSHAKE_2:
         default:
-        // Logger.log("RTMP_HANDSHAKE_2");
-        // return this.rtmpChunkRead(data, p, bytes);
+          // Logger.log("RTMP_HANDSHAKE_2");
+          return this.rtmpChunkRead(data, p, bytes);
       }
     }
   }
@@ -522,7 +522,7 @@ class NodeRtmpSession {
             if (this.parserPacket.clock > 0xffffffff) {
               break;
             }
-            this.rtmpHandler();
+            // this.rtmpHandler();
           } else if (0 === this.parserPacket.bytes % this.inChunkSize) {
             this.parserState = RTMP_PARSE_INIT;
           }
