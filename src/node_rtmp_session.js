@@ -114,7 +114,6 @@ class NodeRtmpSession {
     this.id = NodeCoreUtils.generateNewSessionID();
     this.ip = socket.remoteAddress;
     this.TAG = "rtmp";
-    this.frames = [];
 
     this.handshakePayload = Buffer.alloc(RTMP_HANDSHAKE_SIZE);
     this.handshakeState = RTMP_HANDSHAKE_UNINIT;
@@ -833,7 +832,7 @@ class NodeRtmpSession {
       let playerSession = context.sessions.get(playerId);
 
       if (playerSession.numPlayCache === 0) {
-        // playerSession.res.cork();
+        playerSession.res.cork();
       }
 
       if (playerSession instanceof NodeRtmpSession) {
@@ -844,9 +843,7 @@ class NodeRtmpSession {
           playerSession.isReceiveVideo
         ) {
           rtmpChunks.writeUInt32LE(playerSession.playStreamId, 8);
-          this.frames.push(rtmpChunks);
-          Logger.log(this.frames);
-          // playerSession.res.write(rtmpChunks);
+          playerSession.res.write(rtmpChunks);
         }
       } else if (playerSession instanceof NodeFlvSession) {
         playerSession.res.write(flvTag, null, (e) => {
