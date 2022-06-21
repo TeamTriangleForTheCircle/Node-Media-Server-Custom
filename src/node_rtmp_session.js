@@ -522,7 +522,7 @@ class NodeRtmpSession {
             if (this.parserPacket.clock > 0xffffffff) {
               break;
             }
-            // this.rtmpHandler();
+            this.rtmpHandler();
           } else if (0 === this.parserPacket.bytes % this.inChunkSize) {
             this.parserState = RTMP_PARSE_INIT;
           }
