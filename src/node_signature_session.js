@@ -1,3 +1,6 @@
+const crypto = require("crypto");
+const fs = require("fs");
+
 const TAG = "NodeSignatureSession"
 const SIGNATURE_PING_TIMEOUT = 30000
 
@@ -22,7 +25,10 @@ class NodeSignatureSession {
   }
 
   onSocketData(data) {
-    console.log(data);
+    const PRIVATE_KEY = fs.readFileSync("./id_rsa.pub", "utf8");
+    const message = crypto.publicDecrypt(PRIVATE_KEY, data).toString("base64");
+    
+    console.log(message);
   }
 
   onSocketClose() {
