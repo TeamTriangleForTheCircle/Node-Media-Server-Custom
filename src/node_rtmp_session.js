@@ -257,6 +257,7 @@ class NodeRtmpSession {
    * @returns
    */
   onSocketData(data) {
+    Logger.log("im here");
     let bytes = data.length;
     let p = 0;
     let n = 0;
@@ -904,7 +905,7 @@ class NodeRtmpSession {
             ) {
               rtmpChunks.writeUInt32LE(playerSession.playStreamId, 8);
               frames.push(rtmpChunks);
-              console.log(frames.length);
+              Logger.log(frames.length + " aantal frames");
               // playerSession.socket.write(rtmpChunks);
             }
           } else if (playerSession instanceof NodeFlvSession) {
