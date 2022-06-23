@@ -24,11 +24,26 @@ class NodeSignatureSession {
     this.isStarting = true;
   }
 
-  onSocketData(data) {
-    const PRIVATE_KEY = fs.readFileSync("./id_rsa.pub", "utf8");
-    const message = crypto.publicDecrypt(PRIVATE_KEY, data).toString("base64");
-    
-    console.log(message);
+  onSocketData(data) {    
+    // Check if data is signature.
+    if (data.length === 512) {
+      const PAYLOAD = Buffer.concat(this.payloads);
+      const PAYLOAD_HASH = crypto.createHash("sha256").update(PAYLOAD).digest("base64");
+      
+      const PUBLIC_KEY = 'Some value';
+
+      const SIGNATURE_HASH = crypto.publicDecrypt({
+        key: PUBLIC_KEY,
+        padding: constants.RSA_NO_PADDING,
+      }, Buffer.from(data, "base64")).toString("base64");
+      
+      if (PAYLOAD_HASH === SIGNATURE_HASH) console.log("Correct!");
+      this.payloads = [];
+    } else {
+      if ((data[0] === 1 && data[1] === 2 && data[2] === 3) && this.payloads.length > 0) this.payloads = [];
+
+      this.payloads.push(data);
+    }
   }
 
   onSocketClose() {
